@@ -15,10 +15,22 @@ services:
       - ./infra/nginx/default.conf:/etc/nginx/conf.d/default.conf
     working_dir: /work
     
+  phpmyadmin:
+    image: "phpmyadmin/phpmyadmin"
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_ARBITRARY=1    
+      - PMA_HOST=db
+    volumes:
+      - ./docker_test:/root/docker_test
+    depends_on:
+      - db  
+  
   db:
     build: ./infra/mysql
     volumes:
       - db-store:/var/lib/mysql
-
+    
 volumes:
   db-store:
